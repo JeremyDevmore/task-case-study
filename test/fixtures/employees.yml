@@ -2,10 +2,10 @@
 
 one:
   name: MyString
-  email: MyString
+  email: MyString@string.com
   status: 1
 
 two:
   name: MyString
-  email: MyString
+  email: MyOtherString@string.com
   status: 1

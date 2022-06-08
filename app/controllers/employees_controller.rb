@@ -1,5 +1,5 @@
 class EmployeesController < ApplicationController
-  before_action :set_employee, only: %i[ show update destroy ]
+  before_action :set_employee, only: %i[show update destroy]
 
   # GET /employees
   def index
@@ -11,6 +11,10 @@ class EmployeesController < ApplicationController
   # GET /employees/1
   def show
     render json: @employee
+  end
+
+  def tasks
+    render json: @employee, include: :tasks
   end
 
   # POST /employees
@@ -39,13 +43,14 @@ class EmployeesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_employee
-      @employee = Employee.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def employee_params
-      params.require(:employee).permit(:name, :email, :status)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_employee
+    @employee = Employee.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def employee_params
+    params.require(:employee).permit(:name, :email, :status)
+  end
 end
