@@ -1,24 +1,30 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# Testing
 
-Things you may want to cover:
+database: postgresql
 
-* Ruby version
+bundle install, create/migrate/seed database, run server
 
-* System dependencies
+##### All employees endpoint
 
-* Configuration
+http://localhost:3000/employees
 
-* Database creation
+##### Active employees endpoint
 
-* Database initialization
+http://localhost:3000/employees?employee[status]=active
 
-* How to run the test suite
+##### Employee all tasks endpoint - /tasks/:employee_id
 
-* Services (job queues, cache servers, search engines, etc.)
+http://localhost:3000/tasks/1
 
-* Deployment instructions
+##### Employee future tasks endpoint - /tasks/:employee_id?employee[future]
 
-* ...
+http://localhost:3000/tasks/1?employee[future]
+
+### Bonus - Task can belong to multiple employees
+
+    test 'should have 2 employees' do
+      employee_count = @task.employees.count
+      assert employee_count == 2
+    end`

@@ -26,7 +26,7 @@ class EmployeesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get tasks for an employee' do
-    get tasks_path(@employee), as: :json
+    get tasks_path(@employee, employee: { future: true }), as: :json
     assert_response :success
   end
 

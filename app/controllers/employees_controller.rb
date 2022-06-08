@@ -3,7 +3,11 @@ class EmployeesController < ApplicationController
 
   # GET /employees
   def index
-    @employees = Employee.all
+    @employees = if params[:employee].present? && employee_params[:status] == 'active'
+                   Employee.active
+                 else
+                   Employee.all
+                 end
 
     render json: @employees
   end
@@ -14,7 +18,13 @@ class EmployeesController < ApplicationController
   end
 
   def tasks
-    render json: @employee, include: :tasks
+    query = ['assigned_tasks.employee_id = ?', params[:id]]
+    if params[:employee].present? && employee_params.key?(:future)
+      query[0] += ' AND execution_date > ?'
+      query << Time.now
+    end
+    @tasks = Task.includes(:assigned_tasks).where(query).references(:assigned_tasks)
+    render json: @tasks
   end
 
   # POST /employees
@@ -51,6 +61,6 @@ class EmployeesController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def employee_params
-    params.require(:employee).permit(:name, :email, :status)
+    params.require(:employee).permit(:name, :email, :status, :future)
   end
 end
